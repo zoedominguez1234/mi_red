@@ -1,0 +1,1718 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSocial - Red Social Educativa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fafafa;
+            color: #262626;
+        }
+
+        .container {
+            max-width: 935px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background-color: white;
+            box-shadow: 0 1px 0 rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #262626;
+            cursor: pointer;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 268px;
+            margin: 0 20px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid #dbdbdb;
+            background-color: #fafafa;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            margin-top: 5px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .search-result-item {
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            border-bottom: 1px solid #efefef;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-item:hover {
+            background-color: #fafafa;
+        }
+
+        .search-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #0095f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            margin-right: 12px;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 22px;
+        }
+
+        .nav-icons i {
+            font-size: 22px;
+            cursor: pointer;
+            color: #262626;
+        }
+
+        /* Auth Forms */
+        .auth-container {
+            max-width: 350px;
+            margin: 30px auto 0;
+            background: white;
+            border: 1px solid #dbdbdb;
+            border-radius: 3px;
+            padding: 30px;
+        }
+
+        .auth-container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 32px;
+            color: #262626;
+        }
+
+        .auth-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #999;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 9px 8px;
+            border: 1px solid #dbdbdb;
+            border-radius: 3px;
+            background-color: #fafafa;
+            font-size: 14px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 8px;
+            background-color: #0095f6;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0081d6;
+        }
+
+        .switch-form {
+            text-align: center;
+            margin-top: 20px;
+            color: #262626;
+            font-size: 14px;
+        }
+
+        .switch-form a {
+            color: #0095f6;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: none;
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 28px;
+        }
+
+        /* Stories Section */
+        .stories-section {
+            background: white;
+            border: 1px solid #dbdbdb;
+            border-radius: 3px;
+            padding: 16px 0;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .stories-container {
+            display: flex;
+            gap: 20px;
+            padding: 0 16px;
+        }
+
+        .story-item {
+            display: inline-block;
+            text-align: center;
+            cursor: pointer;
+            width: 66px;
+        }
+
+        .story-avatar-wrapper {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            padding: 2px;
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            margin: 0 auto 8px;
+        }
+
+        .story-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #262626;
+            font-size: 20px;
+        }
+
+        .story-username {
+            font-size: 12px;
+            color: #262626;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .add-story {
+            display: inline-block;
+            text-align: center;
+            cursor: pointer;
+            width: 66px;
+        }
+
+        .add-story-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background-color: #fafafa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            border: 1px dashed #dbdbdb;
+        }
+
+        /* Feed */
+        .feed {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .post {
+            background: white;
+            border: 1px solid #dbdbdb;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            justify-content: space-between;
+        }
+
+        .post-user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .post-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #0095f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            margin-right: 12px;
+        }
+
+        .post-username {
+            font-size: 14px;
+            font-weight: 600;
+            color: #262626;
+            text-decoration: none;
+        }
+
+        .post-menu {
+            cursor: pointer;
+            color: #262626;
+        }
+
+        .post-image {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(45deg, #8a2be2, #5f9ea0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .post-actions {
+            padding: 12px 16px;
+        }
+
+        .post-actions-top {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+
+        .post-actions-top i {
+            font-size: 22px;
+            cursor: pointer;
+            color: #262626;
+        }
+
+        .post-actions-top .fa-bookmark {
+            margin-left: auto;
+        }
+
+        .likes-count {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .post-caption {
+            padding: 0 16px;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .post-caption .username {
+            font-weight: 600;
+            margin-right: 4px;
+        }
+
+        .comments-section {
+            padding: 0 16px;
+            margin-bottom: 8px;
+        }
+
+        .comment {
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .comment .username {
+            font-weight: 600;
+            margin-right: 4px;
+        }
+
+        .post-time {
+            padding: 0 16px;
+            font-size: 10px;
+            color: #8e8e8e;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .add-comment {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-top: 1px solid #efefef;
+        }
+
+        .add-comment input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .add-comment button {
+            background: none;
+            border: none;
+            color: #0095f6;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            opacity: 0.3;
+        }
+
+        .add-comment button.active {
+            opacity: 1;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 80px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .user-profile .avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background-color: #0095f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            margin-right: 12px;
+        }
+
+        .user-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #262626;
+            margin-bottom: 4px;
+        }
+
+        .user-info p {
+            font-size: 14px;
+            color: #8e8e8e;
+        }
+
+        .suggestions-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .suggestions-header h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #8e8e8e;
+        }
+
+        .suggestions-header a {
+            font-size: 12px;
+            font-weight: 600;
+            color: #262626;
+            text-decoration: none;
+        }
+
+        .suggestion-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .suggestion-item .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #ff6b6b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            margin-right: 12px;
+        }
+
+        .suggestion-info {
+            flex: 1;
+        }
+
+        .suggestion-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #262626;
+            margin-bottom: 2px;
+        }
+
+        .suggestion-info p {
+            font-size: 12px;
+            color: #8e8e8e;
+        }
+
+        .follow-btn {
+            background: none;
+            border: none;
+            color: #0095f6;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 400px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .close-modal {
+            font-size: 24px;
+            cursor: pointer;
+            color: #8e8e8e;
+        }
+
+        .modal-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .modal-action {
+            padding: 12px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .modal-action:hover {
+            background-color: #fafafa;
+        }
+
+        .danger {
+            color: #ed4956;
+        }
+
+        /* Create Post Modal */
+        .create-post-modal .modal-content {
+            max-width: 600px;
+        }
+
+        .post-header-modal {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid #efefef;
+        }
+
+        .post-form {
+            padding: 16px;
+        }
+
+        .post-form textarea {
+            width: 100%;
+            min-height: 100px;
+            border: 1px solid #dbdbdb;
+            border-radius: 4px;
+            padding: 12px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            resize: none;
+        }
+
+        .post-media-preview {
+            width: 100%;
+            height: 200px;
+            background-color: #fafafa;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8e8e8e;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .remove-media {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+
+        .post-options {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-top: 1px solid #efefef;
+        }
+
+        .option-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: none;
+            color: #262626;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+
+        .option-btn:hover {
+            background-color: #fafafa;
+        }
+
+        /* Music Search */
+        .music-search-modal .modal-content {
+            max-width: 500px;
+        }
+
+        .music-search-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dbdbdb;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .music-results {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .music-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 8px;
+        }
+
+        .music-item:hover {
+            background-color: #fafafa;
+        }
+
+        .music-item img {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            margin-right: 12px;
+        }
+
+        .music-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .music-info p {
+            font-size: 12px;
+            color: #8e8e8e;
+        }
+
+        /* Story Creation */
+        .story-modal .modal-content {
+            max-width: 500px;
+        }
+
+        .story-form textarea {
+            width: 100%;
+            min-height: 100px;
+            border: 1px solid #dbdbdb;
+            border-radius: 4px;
+            padding: 12px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            resize: none;
+        }
+
+        .story-form input[type="file"] {
+            width: 100%;
+            margin-bottom: 16px;
+            padding: 12px;
+            border: 1px solid #dbdbdb;
+            border-radius: 4px;
+        }
+
+        /* Messages */
+        .messages-modal .modal-content {
+            max-width: 600px;
+            height: 80vh;
+        }
+
+        .messages-header {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid #efefef;
+        }
+
+        .messages-container {
+            height: 500px;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        .message {
+            display: flex;
+            margin-bottom: 16px;
+        }
+
+        .message.sent {
+            justify-content: flex-end;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 12px;
+            border-radius: 18px;
+            font-size: 14px;
+        }
+
+        .message.received .message-content {
+            background-color: #efefef;
+            border-top-left-radius: 4px;
+        }
+
+        .message.sent .message-content {
+            background-color: #0095f6;
+            color: white;
+            border-top-right-radius: 4px;
+        }
+
+        .message-input-container {
+            display: flex;
+            padding: 16px;
+            border-top: 1px solid #efefef;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #dbdbdb;
+            border-radius: 20px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .message-send-btn {
+            background: none;
+            border: none;
+            color: #0095f6;
+            font-weight: 600;
+            padding: 0 16px;
+            cursor: pointer;
+        }
+
+        /* Story Viewer */
+        .story-viewer-modal .modal-content {
+            max-width: 400px;
+            background: black;
+            color: white;
+        }
+
+        .story-viewer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+        }
+
+        .story-content {
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Friends/Suggestions */
+        .friends-modal .modal-content {
+            max-width: 500px;
+        }
+
+        .friend-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .friend-item:hover {
+            background-color: #fafafa;
+        }
+
+        .friend-item .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #0095f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            margin-right: 12px;
+        }
+
+        .friend-info {
+            flex: 1;
+        }
+
+        .friend-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .friend-info p {
+            font-size: 12px;
+            color: #8e8e8e;
+        }
+
+        .friend-actions button {
+            background: none;
+            border: none;
+            color: #0095f6;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 4px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                display: none;
+            }
+            .header-content {
+                padding: 10px 0;
+            }
+            .search-bar {
+                display: none;
+            }
+            .nav-icons {
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Página de Autenticación -->
+    <div id="auth-page">
+        <div class="auth-container" id="login-form">
+            <h1>EduSocial</h1>
+            <h2>Inicia sesión para conectar con tu comunidad escolar</h2>
+            <div class="form-group">
+                <input type="email" id="login-email" placeholder="Correo electrónico">
+            </div>
+            <div class="form-group">
+                <input type="password" id="login-password" placeholder="Contraseña">
+            </div>
+            <button class="btn" onclick="login()">Iniciar Sesión</button>
+            <div class="switch-form">
+                ¿No tienes cuenta? <a href="#" onclick="showRegister()">Regístrate</a>
+            </div>
+        </div>
+
+        <div class="auth-container" id="register-form" style="display: none;">
+            <h1>EduSocial</h1>
+            <h2>Regístrate para unirte a la comunidad</h2>
+            <div class="form-group">
+                <input type="text" id="register-name" placeholder="Nombre completo">
+            </div>
+            <div class="form-group">
+                <input type="text" id="register-username" placeholder="Nombre de usuario">
+            </div>
+            <div class="form-group">
+                <input type="email" id="register-email" placeholder="Correo electrónico">
+            </div>
+            <div class="form-group">
+                <input type="password" id="register-password" placeholder="Contraseña">
+            </div>
+            <div class="form-group">
+                <input type="password" id="register-confirm" placeholder="Confirmar contraseña">
+            </div>
+            <button class="btn" onclick="register()">Registrarse</button>
+            <div class="switch-form">
+                ¿Ya tienes cuenta? <a href="#" onclick="showLogin()">Inicia sesión</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido Principal (oculto por defecto) -->
+    <div id="main-app" style="display: none;">
+        <header>
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo" onclick="goHome()">EduSocial</div>
+                    <div class="search-bar">
+                        <input type="text" id="search-input" placeholder="Buscar" oninput="performSearch(this.value)" onfocus="showSearchResults()" onblur="hideSearchResultsDelayed()">
+                        <div class="search-results" id="search-results">
+                            <!-- Resultados de búsqueda se insertan aquí dinámicamente -->
+                        </div>
+                    </div>
+                    <div class="nav-icons">
+                        <i class="fas fa-home" onclick="goHome()"></i>
+                        <i class="far fa-user" onclick="openFriends()"></i>
+                        <i class="far fa-plus-square" onclick="openCreatePost()"></i>
+                        <i class="far fa-paper-plane" onclick="openMessages()"></i>
+                        <i class="far fa-bell" onclick="openNotifications()"></i>
+                        <i class="far fa-user-circle" onclick="openProfileMenu()"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="main-content">
+                <!-- Feed Central -->
+                <div class="feed">
+                    <!-- Stories Section -->
+                    <div class="stories-section">
+                        <div class="stories-container">
+                            <div class="add-story" onclick="openAddStory()">
+                                <div class="add-story-avatar">
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                                <div class="story-username">Tu historia</div>
+                            </div>
+                            <div class="story-item" onclick="viewStory('juanperez')">
+                                <div class="story-avatar-wrapper">
+                                    <div class="story-avatar">JS</div>
+                                </div>
+                                <div class="story-username">juanperez</div>
+                            </div>
+                            <div class="story-item" onclick="viewStory('mariaperez')">
+                                <div class="story-avatar-wrapper">
+                                    <div class="story-avatar">MP</div>
+                                </div>
+                                <div class="story-username">maria_p</div>
+                            </div>
+                            <div class="story-item" onclick="viewStory('carlosruiz')">
+                                <div class="story-avatar-wrapper">
+                                    <div class="story-avatar">CR</div>
+                                </div>
+                                <div class="story-username">carlos_r</div>
+                            </div>
+                            <div class="story-item" onclick="viewStory('lauragarcia')">
+                                <div class="story-avatar-wrapper">
+                                    <div class="story-avatar">LG</div>
+                                </div>
+                                <div class="story-username">laura_g</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Publicación 1 (de cajón) -->
+                    <div class="post">
+                        <div class="post-header">
+                            <div class="post-user-info">
+                                <div class="post-avatar">MP</div>
+                                <a href="#" class="post-username">maria_perez</a>
+                            </div>
+                            <div class="post-menu">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </div>
+                        </div>
+                        <div class="post-image">
+                            <div>🎉 Debate Estudiantil Exitoso</div>
+                        </div>
+                        <div class="post-actions">
+                            <div class="post-actions-top">
+                                <i class="far fa-heart like-btn" onclick="toggleLike(this)"></i>
+                                <i class="far fa-comment" onclick="openComments()"></i>
+                                <i class="far fa-paper-plane"></i>
+                                <i class="far fa-bookmark"></i>
+                            </div>
+                            <div class="likes-count">127 me gusta</div>
+                            <div class="post-caption">
+                                <span class="username">maria_perez</span>Excelente presentación en el debate de hoy! 🎤
+                            </div>
+                            <div class="comments-section">
+                                <div class="comment">
+                                    <span class="username">carlos_ruiz:</span>Muy buen trabajo equipo!
+                                </div>
+                                <div class="comment">
+                                    <span class="username">laura_garcia:</span>Felicidades por el primer lugar!
+                                </div>
+                            </div>
+                            <div class="post-time">HACE 2 HORAS</div>
+                            <div class="add-comment">
+                                <input type="text" placeholder="Añadir un comentario..." oninput="checkCommentInput(this)">
+                                <button>Publicar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Publicación 2 (de cajón) -->
+                    <div class="post">
+                        <div class="post-header">
+                            <div class="post-user-info">
+                                <div class="post-avatar">LG</div>
+                                <a href="#" class="post-username">laura_garcia</a>
+                            </div>
+                            <div class="post-menu">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </div>
+                        </div>
+                        <div class="post-image">
+                            <div>🧬 Proyecto de Biología Finalizado</div>
+                        </div>
+                        <div class="post-actions">
+                            <div class="post-actions-top">
+                                <i class="fas fa-heart like-btn" onclick="toggleLike(this)"></i>
+                                <i class="far fa-comment" onclick="openComments()"></i>
+                                <i class="far fa-paper-plane"></i>
+                                <i class="far fa-bookmark"></i>
+                            </div>
+                            <div class="likes-count">89 me gusta</div>
+                            <div class="post-caption">
+                                <span class="username">laura_garcia</span>Nuestro proyecto de biología ya está listo! 🧬
+                            </div>
+                            <div class="comments-section">
+                                <div class="comment">
+                                    <span class="username">juan_perez:</span>Se ve increíble!
+                                </div>
+                            </div>
+                            <div class="post-time">HACE 5 HORAS</div>
+                            <div class="add-comment">
+                                <input type="text" placeholder="Añadir un comentario..." oninput="checkCommentInput(this)">
+                                <button>Publicar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <div class="user-profile" onclick="openProfile()">
+                        <div class="avatar">JS</div>
+                        <div class="user-info">
+                            <h4>juanperez</h4>
+                            <p>Juan Pérez</p>
+                        </div>
+                    </div>
+
+                    <div class="suggestions-header">
+                        <h3>Sugerencias para ti</h3>
+                        <a href="#" onclick="openFriends()">Ver todo</a>
+                    </div>
+
+                    <div class="suggestion-item">
+                        <div class="avatar">PR</div>
+                        <div class="suggestion-info">
+                            <h4>prof_rodriguez</h4>
+                            <p>Profesora de Matemáticas</p>
+                        </div>
+                        <button class="follow-btn">Seguir</button>
+                    </div>
+
+                    <div class="suggestion-item">
+                        <div class="avatar">PC</div>
+                        <div class="suggestion-info">
+                            <h4>prepa_central</h4>
+                            <p>Preparatoria Central</p>
+                        </div>
+                        <button class="follow-btn">Seguir</button>
+                    </div>
+
+                    <div class="suggestion-item">
+                        <div class="avatar">EB</div>
+                        <div class="suggestion-info">
+                            <h4>equipo_basquet</h4>
+                            <p>Equipo de Básquetbol</p>
+                        </div>
+                        <button class="follow-btn">Seguir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para crear publicación -->
+    <div id="create-post-modal" class="modal create-post-modal">
+        <div class="modal-content">
+            <div class="post-header-modal">
+                <div class="post-avatar">JS</div>
+                <div style="font-weight: 600;">juanperez</div>
+                <span class="close-modal" onclick="closeModal('create-post-modal')">&times;</span>
+            </div>
+            <div class="post-form">
+                <textarea id="post-content" placeholder="¿Qué quieres compartir?"></textarea>
+                <div class="post-media-preview" id="media-preview" style="display: none;">
+                    <button class="remove-media" onclick="removeMedia()">×</button>
+                    <div>Vista previa de imagen/música</div>
+                </div>
+                <div class="post-options">
+                    <button class="option-btn" onclick="addImageToPost()">
+                        <i class="fas fa-image"></i>
+                        Foto
+                    </button>
+                    <button class="option-btn" onclick="openMusicSearch()">
+                        <i class="fas fa-music"></i>
+                        Música
+                    </button>
+                    <button class="option-btn" onclick="createNote()">
+                        <i class="fas fa-sticky-note"></i>
+                        Nota
+                    </button>
+                </div>
+                <button class="btn" onclick="publishPost()" style="margin-top: 16px;">Compartir</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para búsqueda de música -->
+    <div id="music-search-modal" class="modal music-search-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Buscar Música</h2>
+                <span class="close-modal" onclick="closeModal('music-search-modal')">&times;</span>
+            </div>
+            <input type="text" class="music-search-input" placeholder="Buscar canciones, artistas..." oninput="searchMusic(this.value)">
+            <div class="music-results" id="music-results">
+                <div class="music-item" onclick="selectMusic('Canción Pop 1')">
+                    <img src="https://placehold.co/40x40/4CAF50/white?text=M1" alt="Música">
+                    <div class="music-info">
+                        <h4>Canción Pop 1</h4>
+                        <p>Artista Pop</p>
+                    </div>
+                </div>
+                <div class="music-item" onclick="selectMusic('Roca Clásica')">
+                    <img src="https://placehold.co/40x40/2196F3/white?text=M2" alt="Música">
+                    <div class="music-info">
+                        <h4>Roca Clásica</h4>
+                        <p>Banda Rockera</p>
+                    </div>
+                </div>
+                <div class="music-item" onclick="selectMusic('Hip Hop Moderno')">
+                    <img src="https://placehold.co/40x40/FF9800/white?text=M3" alt="Música">
+                    <div class="music-info">
+                        <h4>Hip Hop Moderno</h4>
+                        <p>Raper Nuevo</p>
+                    </div>
+                </div>
+                <div class="music-item" onclick="selectMusic('Jazz Relajante')">
+                    <img src="https://placehold.co/40x40/9C27B0/white?text=M4" alt="Música">
+                    <div class="music-info">
+                        <h4>Jazz Relajante</h4>
+                        <p>Músico de Jazz</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para crear historia -->
+    <div id="create-story-modal" class="modal story-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Crear Historia</h2>
+                <span class="close-modal" onclick="closeModal('create-story-modal')">&times;</span>
+            </div>
+            <div class="story-form">
+                <textarea id="story-content" placeholder="Escribe algo para tu historia..."></textarea>
+                <input type="file" accept="image/*" onchange="previewStoryImage(this)">
+                <div class="post-media-preview" id="story-preview" style="display: none;">
+                    <button class="remove-media" onclick="removeStoryImage()">×</button>
+                    <div>Vista previa de imagen</div>
+                </div>
+                <button class="btn" onclick="publishStory()">Agregar Historia</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para ver historia -->
+    <div id="story-viewer-modal" class="modal story-viewer-modal">
+        <div class="modal-content">
+            <div class="story-viewer-header">
+                <div>
+                    <div style="font-weight: 600;">juanperez</div>
+                    <div style="font-size: 12px; opacity: 0.8;">Hace 2 horas</div>
+                </div>
+                <span class="close-modal" onclick="closeModal('story-viewer-modal')">&times;</span>
+            </div>
+            <div class="story-content">
+                <div>📸 Contenido de la historia</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para mensajes -->
+    <div id="messages-modal" class="modal messages-modal">
+        <div class="modal-content">
+            <div class="messages-header">
+                <div style="font-weight: 600;">Mensajes</div>
+                <span class="close-modal" onclick="closeModal('messages-modal')">&times;</span>
+            </div>
+            <div class="messages-container" id="messages-container">
+                <div class="message received">
+                    <div class="message-content">¡Hola! ¿Cómo estás?</div>
+                </div>
+                <div class="message sent">
+                    <div class="message-content">¡Hola! Bien, ¿y tú?</div>
+                </div>
+                <div class="message received">
+                    <div class="message-content">Todo bien, gracias. ¿Vas a ir al evento de mañana?</div>
+                </div>
+            </div>
+            <div class="message-input-container">
+                <input type="text" class="message-input" placeholder="Escribe un mensaje..." onkeypress="sendMessageOnEnter(event)">
+                <button class="message-send-btn" onclick="sendMessage()">Enviar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para amigos/solicitudes -->
+    <div id="friends-modal" class="modal friends-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Amigos y Solicitudes</h2>
+                <span class="close-modal" onclick="closeModal('friends-modal')">&times;</span>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <h3 style="margin-bottom: 10px;">Solicitudes de amistad</h3>
+                <div class="friend-item">
+                    <div class="avatar">AT</div>
+                    <div class="friend-info">
+                        <h4>ana_torres</h4>
+                        <p>Ana Torres</p>
+                    </div>
+                    <div class="friend-actions">
+                        <button onclick="acceptFriendRequest('ana_torres')">Aceptar</button>
+                        <button onclick="rejectFriendRequest('ana_torres')">Rechazar</button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h3 style="margin-bottom: 10px;">Tus amigos</h3>
+                <div class="friend-item">
+                    <div class="avatar">MP</div>
+                    <div class="friend-info">
+                        <h4>maria_perez</h4>
+                        <p>María Pérez</p>
+                    </div>
+                    <div class="friend-actions">
+                        <button onclick="sendMessageToUser('maria_perez')">Mensaje</button>
+                    </div>
+                </div>
+                <div class="friend-item">
+                    <div class="avatar">CR</div>
+                    <div class="friend-info">
+                        <h4>carlos_ruiz</h4>
+                        <p>Carlos Ruiz</p>
+                    </div>
+                    <div class="friend-actions">
+                        <button onclick="sendMessageToUser('carlos_ruiz')">Mensaje</button>
+                    </div>
+                </div>
+                <div class="friend-item">
+                    <div class="avatar">LG</div>
+                    <div class="friend-info">
+                        <h4>laura_garcia</h4>
+                        <p>Laura García</p>
+                    </div>
+                    <div class="friend-actions">
+                        <button onclick="sendMessageToUser('laura_garcia')">Mensaje</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para menú de perfil -->
+    <div id="profile-menu-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-actions">
+                <div class="modal-action danger" onclick="logout()">Cerrar sesión</div>
+                <div class="modal-action" onclick="openProfile()">Editar perfil</div>
+                <div class="modal-action" onclick="openSettings()">Configuración</div>
+                <div class="modal-action" onclick="closeModal('profile-menu-modal')">Cancelar</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para perfil -->
+    <div id="profile-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Editar Perfil</h2>
+                <span class="close-modal" onclick="closeModal('profile-modal')">&times;</span>
+            </div>
+            <div style="text-align: center; margin: 20px 0;">
+                <div style="width: 80px; height: 80px; border-radius: 50%; background: #0095f6; display: inline-flex; align-items: center; justify-content: center; color: white; font-size: 30px; font-weight: bold; margin-bottom: 15px;">JS</div>
+                <h3 style="margin-bottom: 5px;">juanperez</h3>
+                <p style="color: #8e8e8e; margin-bottom: 20px;">Juan Pérez</p>
+            </div>
+            <div class="form-group">
+                <input type="text" id="profile-name" value="Juan Pérez" placeholder="Nombre">
+            </div>
+            <div class="form-group">
+                <input type="text" id="profile-username" value="juanperez" placeholder="Nombre de usuario">
+            </div>
+            <div class="form-group">
+                <input type="email" id="profile-email" value="juan.perez@email.com" placeholder="Correo electrónico">
+            </div>
+            <div class="form-group">
+                <textarea id="profile-bio" rows="3" placeholder="Biografía">Estudiante de Preparatoria #12. Amante de la música y las ciencias.</textarea>
+            </div>
+            <div class="form-group">
+                <input type="text" id="profile-school" value="Preparatoria #12" placeholder="Preparatoria">
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="profile-private" checked> Perfil privado
+                </label>
+            </div>
+            <button class="btn" onclick="saveProfile()">Guardar cambios</button>
+        </div>
+    </div>
+
+    <script>
+        // Datos simulados para usuarios
+        const usersData = [
+            { id: 1, username: 'juanperez', name: 'Juan Pérez', avatar: 'JP', isFriend: false, hasSentRequest: false },
+            { id: 2, username: 'mariaperez', name: 'María Pérez', avatar: 'MP', isFriend: true, hasSentRequest: false },
+            { id: 3, username: 'carlosruiz', name: 'Carlos Ruiz', avatar: 'CR', isFriend: true, hasSentRequest: false },
+            { id: 4, username: 'lauragarcia', name: 'Laura García', avatar: 'LG', isFriend: true, hasSentRequest: false },
+            { id: 5, username: 'anatorres', name: 'Ana Torres', avatar: 'AT', isFriend: false, hasSentRequest: true },
+            { id: 6, username: 'profrodriguez', name: 'Prof. Rodríguez', avatar: 'PR', isFriend: false, hasSentRequest: false },
+            { id: 7, username: 'prepacentral', name: 'Prepa Central', avatar: 'PC', isFriend: false, hasSentRequest: false },
+            { id: 8, username: 'equipobasquet', name: 'Equipo Básquet', avatar: 'EB', isFriend: false, hasSentRequest: false }
+        ];
+
+        // Funciones de autenticación
+        function showRegister() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'block';
+        }
+
+        function showLogin() {
+            document.getElementById('register-form').style.display = 'none';
+            document.getElementById('login-form').style.display = 'block';
+        }
+
+        function login() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            if(email && password) {
+                // Simular inicio de sesión
+                document.getElementById('auth-page').style.display = 'none';
+                document.getElementById('main-app').style.display = 'block';
+            } else {
+                alert('Por favor completa todos los campos');
+            }
+        }
+
+        function register() {
+            const name = document.getElementById('register-name').value;
+            const username = document.getElementById('register-username').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirm = document.getElementById('register-confirm').value;
+            
+            if(name && username && email && password && confirm) {
+                if(password !== confirm) {
+                    alert('Las contraseñas no coinciden');
+                    return;
+                }
+                
+                // Simular registro y envío de correo de verificación
+                alert('¡Registro exitoso! Se ha enviado un correo de verificación a tu cuenta. Por favor revisa tu bandeja de entrada.');
+                showLogin();
+            } else {
+                alert('Por favor completa todos los campos');
+            }
+        }
+
+        // Funciones de navegación
+        function goHome() {
+            // Ya estamos en home
+        }
+
+        function openNotifications() {
+            alert('Notificaciones');
+        }
+
+        function openMessages() {
+            document.getElementById('messages-modal').style.display = 'flex';
+        }
+
+        function openFriends() {
+            document.getElementById('friends-modal').style.display = 'flex';
+        }
+
+        // Funciones de búsqueda
+        function performSearch(query) {
+            const resultsContainer = document.getElementById('search-results');
+            if (query.length === 0) {
+                resultsContainer.innerHTML = '';
+                return;
+            }
+
+            const filteredUsers = usersData.filter(user => 
+                user.username.toLowerCase().includes(query.toLowerCase()) ||
+                user.name.toLowerCase().includes(query.toLowerCase())
+            );
+
+            let resultsHTML = '';
+            filteredUsers.forEach(user => {
+                resultsHTML += `
+                    <div class="search-result-item" onclick="goToProfile(${user.id})">
+                        <div class="search-avatar">${user.avatar}</div>
+                        <div>
+                            <div style="font-weight: 600;">${user.username}</div>
+                            <div style="font-size: 14px; color: #8e8e8e;">${user.name}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            resultsContainer.innerHTML = resultsHTML;
+            showSearchResults();
+        }
+
+        function showSearchResults() {
+            document.getElementById('search-results').style.display = 'block';
+        }
+
+        function hideSearchResultsDelayed() {
+            setTimeout(() => {
+                document.getElementById('search-results').style.display = 'none';
+            }, 200);
+        }
+
+        function goToProfile(userId) {
+            const user = usersData.find(u => u.id === userId);
+            if (user) {
+                alert(`Ir al perfil de: ${user.name}`);
+                document.getElementById('search-results').style.display = 'none';
+                document.getElementById('search-input').value = '';
+            }
+        }
+
+        // Funciones para abrir modales
+        function openCreatePost() {
+            document.getElementById('create-post-modal').style.display = 'flex';
+        }
+
+        function openProfileMenu() {
+            document.getElementById('profile-menu-modal').style.display = 'flex';
+        }
+
+        function openProfile() {
+            closeModal('profile-menu-modal');
+            document.getElementById('profile-modal').style.display = 'flex';
+        }
+
+        function openAddStory() {
+            document.getElementById('create-story-modal').style.display = 'flex';
+        }
+
+        function openMusicSearch() {
+            document.getElementById('music-search-modal').style.display = 'flex';
+        }
+
+        function openSettings() {
+            alert('Función de configuración');
+            closeModal('profile-menu-modal');
+        }
+
+        function viewStory(username) {
+            document.getElementById('story-viewer-modal').style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Función para dar/quitar like
+        function toggleLike(element) {
+            if(element.classList.contains('far')) {
+                element.classList.remove('far');
+                element.classList.add('fas');
+                element.style.color = '#ed4956';
+            } else {
+                element.classList.remove('fas');
+                element.classList.add('far');
+                element.style.color = '';
+            }
+        }
+
+        // Funciones para crear contenido
+        function publishPost() {
+            const content = document.getElementById('post-content').value;
+            if(content.trim()) {
+                alert('Publicación compartida exitosamente!');
+                closeModal('create-post-modal');
+                document.getElementById('post-content').value = '';
+                document.getElementById('media-preview').style.display = 'none';
+            } else {
+                alert('Por favor escribe algo para publicar');
+            }
+        }
+
+        function saveProfile() {
+            const isPrivate = document.getElementById('profile-private').checked;
+            alert(`Perfil actualizado exitosamente! Tu perfil es ${isPrivate ? 'privado' : 'público'}.`);
+            closeModal('profile-modal');
+        }
+
+        function logout() {
+            if(confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+                closeModal('profile-menu-modal');
+                document.getElementById('main-app').style.display = 'none';
+                document.getElementById('auth-page').style.display = 'block';
+                showLogin();
+            }
+        }
+
+        function addImageToPost() {
+            document.getElementById('media-preview').style.display = 'flex';
+            document.getElementById('media-preview').innerHTML = `
+                <button class="remove-media" onclick="removeMedia()">×</button>
+                <div>📷 Vista previa de imagen</div>
+            `;
+        }
+
+        function removeMedia() {
+            document.getElementById('media-preview').style.display = 'none';
+        }
+
+        function createNote() {
+            alert('Función para crear nota');
+        }
+
+        function publishStory() {
+            const content = document.getElementById('story-content').value;
+            alert('Historia agregada exitosamente!');
+            closeModal('create-story-modal');
+            document.getElementById('story-content').value = '';
+            document.getElementById('story-preview').style.display = 'none';
+        }
+
+        function previewStoryImage(input) {
+            if (input.files && input.files[0]) {
+                document.getElementById('story-preview').style.display = 'flex';
+                document.getElementById('story-preview').innerHTML = `
+                    <button class="remove-media" onclick="removeStoryImage()">×</button>
+                    <div>📷 Vista previa de imagen seleccionada</div>
+                `;
+            }
+        }
+
+        function removeStoryImage() {
+            document.getElementById('story-preview').style.display = 'none';
+        }
+
+        function searchMusic(query) {
+            // Simular búsqueda de música
+            console.log('Buscando música:', query);
+        }
+
+        function selectMusic(songName) {
+            document.getElementById('media-preview').style.display = 'flex';
+            document.getElementById('media-preview').innerHTML = `
+                <button class="remove-media" onclick="removeMedia()">×</button>
+                <div>🎵 ${songName} seleccionada</div>
+            `;
+            closeModal('music-search-modal');
+        }
+
+        function checkCommentInput(input) {
+            const button = input.nextElementSibling;
+            if(input.value.trim()) {
+                button.classList.add('active');
+            } else {
+                button.classList.remove('active');
+            }
+        }
+
+        function openComments() {
+            alert('Abrir comentarios');
+        }
+
+        // Funciones de mensajes
+        function sendMessage() {
+            const input = document.querySelector('.message-input');
+            const message = input.value.trim();
+            
+            if (message) {
+                const messagesContainer = document.getElementById('messages-container');
+                const messageElement = document.createElement('div');
+                messageElement.className = 'message sent';
+                messageElement.innerHTML = `<div class="message-content">${message}</div>`;
+                messagesContainer.appendChild(messageElement);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                input.value = '';
+            }
+        }
+
+        function sendMessageOnEnter(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function sendMessageToUser(username) {
+            alert(`Abrir chat con ${username}`);
+            closeModal('friends-modal');
+        }
+
+        // Funciones de amistad
+        function acceptFriendRequest(username) {
+            alert(`Solicitud de amistad de ${username} aceptada`);
+            // Actualizar UI
+        }
+
+        function rejectFriendRequest(username) {
+            alert(`Solicitud de amistad de ${username} rechazada`);
+            // Actualizar UI
+        }
+
+        // Cerrar modales al hacer clic fuera
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+
+        // Simular funcionalidad básica
+        document.addEventListener('DOMContentLoaded', function() {
+            // Agregar funcionalidad a los botones de navegación
+            const navIcons = document.querySelectorAll('.nav-icons i');
+            navIcons.forEach(icon => {
+                icon.addEventListener('click', function() {
+                    if(this.classList.contains('fa-home')) {
+                        goHome();
+                    } else if(this.classList.contains('fa-user')) {
+                        openFriends();
+                    } else if(this.classList.contains('fa-plus-square')) {
+                        openCreatePost();
+                    } else if(this.classList.contains('fa-paper-plane')) {
+                        openMessages();
+                    } else if(this.classList.contains('fa-bell')) {
+                        openNotifications();
+                    } else if(this.classList.contains('fa-user-circle')) {
+                        openProfileMenu();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
